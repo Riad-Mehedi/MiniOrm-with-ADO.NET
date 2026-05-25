@@ -1,0 +1,20 @@
+-- up
+CREATE TABLE IF NOT EXISTS products (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  price NUMERIC NOT NULL,
+  discount NUMERIC NULL,
+  in_stock BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL,
+  ordered_at TIMESTAMP NOT NULL,
+  notes TEXT NULL
+);
+
+-- down
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS orders;

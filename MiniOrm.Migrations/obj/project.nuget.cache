@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "+lBk03bPd5Y=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\user\\Desktop\\RiadMEhedi\\AsthaIT\\Assignments\\MiniOrmAssignment\\MiniOrm.Migrations\\MiniOrm.Migrations.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\npgsql\\10.0.2\\npgsql.10.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
