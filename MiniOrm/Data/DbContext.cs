@@ -2,7 +2,6 @@ using Npgsql;
 
 namespace MiniOrm.Data;
 
-/// <summary>
 /// Abstract base class for all application contexts.
 ///
 /// Responsibilities:
@@ -10,7 +9,6 @@ namespace MiniOrm.Data;
 ///   2. On construction, reflects over the concrete subclass to find every
 ///      DbSet&lt;T&gt; property and sets it to a new instance — exactly what
 ///      Entity Framework Core does internally.
-/// </summary>
 public abstract class DbContext : IDisposable
 {
     private readonly string _connectionString;
@@ -22,10 +20,8 @@ public abstract class DbContext : IDisposable
         InitDbSets();
     }
 
-    /// <summary>
     /// Returns the open connection, opening it if it is null or closed.
     /// A single connection is reused for the lifetime of the context.
-    /// </summary>
     public NpgsqlConnection GetConnection()
     {
         if (_connection == null ||
@@ -37,11 +33,9 @@ public abstract class DbContext : IDisposable
         return _connection;
     }
 
-    /// <summary>
     /// Finds every property of type DbSet&lt;T&gt; on the concrete subclass and
     /// constructs an instance of DbSet&lt;T&gt; passing 'this' as the context.
     /// This is why subclass properties do not need to be initialised manually.
-    /// </summary>
     private void InitDbSets()
     {
         var props = GetType().GetProperties()

@@ -3,23 +3,6 @@ using NpgsqlTypes;
 
 namespace MiniOrm.Data;
 
-/// <summary>
-/// Generic repository for entity type T.
-///
-/// All SQL is built at runtime from EntityMetadata — no table name or column
-/// name is ever hardcoded in this class.  The same code handles Product,
-/// Order, and any future entity.
-///
-/// Safety rules enforced throughout:
-///   • Every value is passed through NpgsqlParameter — never string-concatenated.
-///   • C# null → DBNull.Value when setting parameters.
-///   • reader.IsDBNull() is checked before every GetValue() call.
-///   • Nullable.GetUnderlyingType() strips the T? wrapper before Convert.ChangeType.
-///
-/// Npgsql 10 note:
-///   Npgsql 10 requires an explicit NpgsqlDbType for numeric types (decimal/NUMERIC).
-///   AddTypedParameter() handles this mapping so no runtime type-inference errors occur.
-/// </summary>
 public class DbSet<T> where T : new()
 {
     private readonly DbContext      _ctx;
@@ -31,12 +14,9 @@ public class DbSet<T> where T : new()
         _meta = TypeMapper.GetMetadata<T>();
     }
 
-    // ── INSERT ───────────────────────────────────────────────────────────────
-
-    /// <summary>
+    // INSERT
     /// Builds a parameterised INSERT for all non-PK columns and returns
     /// the new SERIAL id via RETURNING id — one round-trip.
-    /// </summary>
     public int Insert(T entity)
     {
         var cols  = _meta.NonPkColumns.ToList();
@@ -55,7 +35,7 @@ public class DbSet<T> where T : new()
         return Convert.ToInt32(cmd.ExecuteScalar());
     }
 
-    // ── FIND BY ID ───────────────────────────────────────────────────────────
+    // FIND BY ID 
 
     public T? FindById(int id)
     {
@@ -66,7 +46,7 @@ public class DbSet<T> where T : new()
         return reader.Read() ? MapRow(reader) : default;
     }
 
-    // ── GET ALL ──────────────────────────────────────────────────────────────
+    // GET ALL 
 
     public IEnumerable<T> GetAll()
     {
@@ -79,7 +59,7 @@ public class DbSet<T> where T : new()
         return list;
     }
 
-    // ── UPDATE ───────────────────────────────────────────────────────────────
+    // UPDATE 
 
     public void Update(T entity)
     {
@@ -103,8 +83,7 @@ public class DbSet<T> where T : new()
         cmd.ExecuteNonQuery();
     }
 
-    // ── DELETE ───────────────────────────────────────────────────────────────
-
+    // DELETE
     public void Delete(int id)
     {
         using var cmd = new NpgsqlCommand(
@@ -114,7 +93,7 @@ public class DbSet<T> where T : new()
         cmd.ExecuteNonQuery();
     }
 
-    // ── ROW → ENTITY ─────────────────────────────────────────────────────────
+    // ROW → ENTITY 
 
     private T MapRow(NpgsqlDataReader reader)
     {
@@ -126,7 +105,6 @@ public class DbSet<T> where T : new()
 
             if (reader.IsDBNull(ordinal))
             {
-                // SQL NULL → C# null (works for both reference types and T?)
                 col.Property.SetValue(entity, null);
                 continue;
             }

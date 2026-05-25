@@ -25,10 +25,10 @@ public class EntityMetadata
     public ColumnMetadata       PrimaryKey { get; init; } = null!;
     public List<ColumnMetadata> Columns    { get; init; } = [];
 
-    /// <summary>
+    
     /// Every column except the PK.  Used to build INSERT / UPDATE statements
     /// so the SERIAL primary key is never included in the parameter list.
-    /// </summary>
+    
     public IEnumerable<ColumnMetadata> NonPkColumns =>
         Columns.Where(c => !c.IsPrimaryKey);
 }
